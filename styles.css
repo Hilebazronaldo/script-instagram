@@ -1,0 +1,11 @@
+/* Mevcut CSS'inize ekleyin */
+
+#login-container {
+    /* ... mevcut stilleri ... */
+    margin: 0 auto; /* yatay olarak ortala */
+    display: flex;
+    flex-direction: column; /* elemanları dikey olarak sıralayın */
+    align-items: center; /* dikey olarak ortala */
+    justify-content: center; /* yatay olarak ortala (isteğe bağlı) */
+  }
+  
